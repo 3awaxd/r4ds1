@@ -27,4 +27,20 @@ billboard |>
   )
 ```
 
+```{r}
+billboard |> 
+  select(wk1, wk4, wk10, wk20, wk40, wk76) |> 
+  pivot_longer(
+    cols = everything(),
+    names_to = "week",
+    values_to = "rank"
+  ) |> 
+  summarize(
+    present = sum(!is.na(rank)),
+    missing = sum(is.na(rank)),
+    .by = week
+  )
+```
+
+
 
