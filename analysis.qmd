@@ -5,8 +5,12 @@ format: html
 ---
 
 ```{r}
-library(tidyverse)
 #| message: false
+library(tidyverse)
+```
 #| execute:
   echo: false
+```{r}
+billboard
 ```
+
