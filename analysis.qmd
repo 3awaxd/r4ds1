@@ -17,12 +17,12 @@ billboard |>
 
 ```{r}
 billboard |> 
-  ggplot(aes(x = wk1)) +
+  ggplot(aes(x = wk6)) +
   geom_histogram(binwidth = 5, color = "white") +
   labs(
-    title = "Distribution of Week 1 Rankings",
-    subtitle = "Rankings for songs entering the Billboard chart (n = 317)",
-    x = "Week 1 Rank",
+    title = "Distribution of Week 6 Rankings",
+    subtitle = "Rankings for songs in their 6th week on the Billboard chart (n = 280)",
+    x = "Week 6 Rank",
     y = "Count"
   )
 ```
