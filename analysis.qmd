@@ -11,6 +11,7 @@ library(tidyverse)
 #| execute:
   echo: false
 ```{r}
-billboard
+billboard |> 
+  select(artist, track, date.entered, wk1:wk4)
 ```
 
