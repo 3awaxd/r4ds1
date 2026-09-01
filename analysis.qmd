@@ -115,8 +115,43 @@ billboard_summary |>
   slice_max(total_weeks, n = 1)
 ```
 
+```{r}
+top10_songs <- billboard |> 
+  pivot_longer(
+    cols = starts_with("wk"),
+    names_to = "week",
+    values_to = "rank",
+    values_drop_na = TRUE
+  ) |> 
+  mutate(week = parse_number(week)) |> 
+  filter(min(rank) <= 10, .by = c(artist, track)) |> 
+  mutate(
+    notable = case_when(
+      artist == "Madonna" & track == "Music" ~ "Music (Madonna)",
+      artist == "Lonestar" & track == "Amazed" ~ "Amazed (Lonestar)",
+      artist == "Creed" & track == "Higher" ~ "Higher (Creed)",
+      .default = NA_character_
+    )
+  )
 
-
-
-
-
+ggplot() +
+  geom_line(
+    data = filter(top10_songs, is.na(notable)),
+    aes(x = week, y = rank, group = track),
+    color = "gray80",
+    alpha = 0.6
+  ) +
+  geom_line(
+    data = filter(top10_songs, !is.na(notable)),
+    aes(x = week, y = rank, color = notable, group = track),
+    linewidth = 1
+  ) +
+  scale_y_reverse() +
+  labs(
+    title = "Top 10 Billboard Songs Over Time",
+    subtitle = "Notable songs highlighted",
+    x = "Week",
+    y = "Rank",
+    color = "Song"
+  )
+```
