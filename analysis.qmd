@@ -77,6 +77,45 @@ billboard |>
   count(re_entered)
 ```
 
+```{r}
+billboard_summary <- billboard |> 
+  pivot_longer(
+    cols = starts_with("wk"),
+    names_to = "week",
+    values_to = "rank",
+    values_drop_na = TRUE
+  ) |> 
+  mutate(week = parse_number(week)) |> 
+  arrange(week) |> 
+  summarize(
+    first_rank = first(rank),
+    best_rank = min(rank),
+    first_week_at_best = week[which.min(rank)],
+    total_weeks = n(),
+    .by = c(artist, track)
+  )
+
+billboard_summary
+```
+
+```{r}
+# Fastest to #1
+billboard_summary |> 
+  filter(best_rank == 1) |> 
+  slice_min(first_week_at_best, n = 1)
+
+# Slowest to #1
+billboard_summary |> 
+  filter(best_rank == 1) |> 
+  slice_max(first_week_at_best, n = 1)
+
+# Top-10 song with longest chart run
+billboard_summary |> 
+  filter(best_rank <= 10) |> 
+  slice_max(total_weeks, n = 1)
+```
+
+
 
 
 
