@@ -15,3 +15,12 @@ billboard |>
   select(artist, track, date.entered, wk1:wk4)
 ```
 
+```{r}
+billboard |> 
+  summarize(
+    min_date = min(date.entered),
+    max_date = max(date.entered)
+  )
+```
+
+
