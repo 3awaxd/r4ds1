@@ -4,3 +4,9 @@ author: "Omar Khatter"
 format: html
 ---
 
+```{r}
+library(tidyverse)
+#| message: false
+#| execute:
+  echo: false
+```
