@@ -155,3 +155,89 @@ ggplot() +
     color = "Song"
   )
 ```
+
+```{r}
+#| cache: true
+music <- read_csv("data/music.csv", show_col_types = FALSE)
+```
+
+```{r}
+names(music)
+```
+
+```{r}
+music |> 
+  select(starts_with("artist")) |> 
+  glimpse()
+```
+
+```{r}
+music |> 
+  select(
+    artist.name,
+    artist.location,
+    artist.latitude,
+    artist.longitude,
+    artist.terms,
+    artist.familiarity,
+    artist.hotttnesss,
+    song.title,
+    song.year
+  ) |> 
+  slice_head(n = 8)
+```
+
+```{r}
+music |> 
+  select(artist.familiarity, artist.hotttnesss, song.year, song.tempo) |> 
+  summary()
+```
+
+```{r}
+music |> 
+  filter(song.year != 0) |> 
+  ggplot(aes(x = song.year)) +
+  geom_histogram(binwidth = 5, color = "white") +
+  labs(
+    title = "Distribution of Song Release Years",
+    subtitle = "Excluding songs with year recorded as 0 (n = 4,680)",
+    x = "Song Year",
+    y = "Count"
+  )
+```
+
+```{r}
+music |> 
+  summarize(
+    across(
+      c(artist.location, release.name, song.title, song.year, artist.familiarity, artist.hotttnesss),
+      \(x) sum(x == 0, na.rm = TRUE)
+    )
+  ) |> 
+  pivot_longer(
+    cols = everything(),
+    names_to = "variable",
+    values_to = "placeholder_count"
+  )
+```
+
+```{r}
+music |> 
+  distinct(artist.id, .keep_all = TRUE) |> 
+  mutate(
+    coordinates = if_else(
+      artist.latitude == 0 & artist.longitude == 0,
+      "placeholder",
+      "usable"
+    )
+  ) |> 
+  count(coordinates)
+```
+
+
+
+
+
+
+
+
